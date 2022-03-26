@@ -1,0 +1,36 @@
+---
+- name: Import MariaDB gpg key
+  apt_key:
+    url: "https://mariadb.org/mariadb_release_signing_key.asc"
+    state: present
+
+- name: Add MariaDB apt repository
+  apt_repository:
+    repo: "deb [arch=amd64] http://mariadb.mirror.globo.tech/repo/10.5/ubuntu focal main"
+    state: present
+
+- name: Install MariaDB on Debian/Ubuntu
+  apt:
+    name: "{{ mysql_packages }}"
+    state: latest
+
+- name: Ensure mysql service is started and enabled at boot.
+  service:
+    name: "{{ mysql_service }}"
+    state: started
+    enabled: yes
+    use: "{{ init_system | default(omit) }}"
+
+- name: Configure mysql server
+  template:
+    src: server-512M.cnf.j2
+    dest: "{{ mysql_conf }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart mysql
+
+- name: Create MariaDB anonymous user
+  mysql_user:
+    name: ''
+    priv: '*.*:ALL'

@@ -1,0 +1,11 @@
+---
+mysql_service: mysql
+init_system: service
+
+mysql_packages:
+  - mariadb-server
+  - mariadb-client
+  - python-openssl
+  - python3-mysqldb
+
+mysql_conf: /etc/mysql/mariadb.conf.d/60-my-server.cnf

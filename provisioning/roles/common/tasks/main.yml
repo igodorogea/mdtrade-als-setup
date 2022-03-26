@@ -1,0 +1,9 @@
+---
+- name: Install common packages
+  apt:
+    name: "{{ common_pkgs }}"
+    update_cache: yes
+    state: latest
+
+- include: user.yml
+- include: www-data.yml

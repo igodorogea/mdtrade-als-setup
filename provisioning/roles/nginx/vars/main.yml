@@ -1,0 +1,2 @@
+---
+nginx_php_fpm_socket: /run/php/php7.3-fpm.sock
